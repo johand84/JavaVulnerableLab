@@ -1,6 +1,6 @@
  <%@ include file="/header.jsp" %>
  <%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.SQLException"%>
 
 <%@page import="java.sql.ResultSetMetaData"%>
@@ -16,9 +16,12 @@ if(session.getAttribute("isLoggedIn")!=null)
    String id=request.getParameter("id");
    if(id!=null && !id.equals(""))
    {
-        Statement stmt = con.createStatement();
+        PreparedStatement stmt = con.prepareStatement(
+            "select * from users where id=?"
+        );
+        stmt.setString(1, id);
              ResultSet rs =null;
-             rs=stmt.executeQuery("select * from users where id="+id);
+             rs=stmt.executeQuery();
               if(rs != null && rs.next())
               {
                 out.print("UserName : "+rs.getString("username")+"<br>"); 

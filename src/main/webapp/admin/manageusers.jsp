@@ -1,5 +1,5 @@
  <%@ include file="/header.jsp" %>
-  <%@page import="java.sql.Statement"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="org.cysecurity.cspf.jvl.model.DBConnect"%>
@@ -7,11 +7,14 @@
 
  <%
    Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
-    Statement stmt = con.createStatement(); 
  if(request.getParameter("delete")!=null)
  {
-     String user=request.getParameter("user");      
-     stmt.executeUpdate("Delete from users where username='"+user+"'");                      
+     PreparedStatement stmt = con.prepareStatement(
+         "Delete from users where username=?"
+     );
+     String user=request.getParameter("user");
+     stmt.setString(1, user);
+     stmt.executeUpdate();
  }
  %>	
 <form action="manageusers.jsp" method="POST">	

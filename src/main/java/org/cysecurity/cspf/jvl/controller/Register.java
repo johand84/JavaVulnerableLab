@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +54,21 @@ public class Register extends HttpServlet {
                     if(con!=null && !con.isClosed())
                                {
                                   
-                                   Statement stmt = con.createStatement();  
-                                  stmt.executeUpdate("INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values ('"+user+"','"+pass+"','"+email+"','"+about+"','default.jpg','user',1,'"+secret+"')");
-                                       stmt.executeUpdate("INSERT into UserMessages(recipient, sender, subject, msg) values ('"+user+"','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
+                                   PreparedStatement stmt1 = con.prepareStatement(
+                                       "INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values (?,?,?,?,'default.jpg','user',1,?)"
+                                   );
+                                   stmt1.setString(1, user);
+                                   stmt1.setString(2, pass);
+                                   stmt1.setString(3, email);
+                                   stmt1.setString(4, about);
+                                   stmt1.setString(5, secret);
+                                   stmt1.executeUpdate();
+
+                                   PreparedStatement stmt2 = con.prepareStatement(
+                                       "INSERT into UserMessages(recipient, sender, subject, msg) values (?,'admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')"
+                                   );
+                                   stmt2.setString(1, user);
+                                   stmt2.executeUpdate();
              
                                     response.sendRedirect("index.jsp");
                                     
