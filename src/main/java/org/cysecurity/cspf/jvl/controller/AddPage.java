@@ -41,6 +41,7 @@ public class AddPage extends HttpServlet {
            if(fileName!=null && content!=null)
            {
             String pagesDir=getServletContext().getRealPath("/pages");
+            new File(pagesDir).mkdirs();
             String filePath=pagesDir+"/"+fileName;
             File f=new File(filePath);
             if(f.exists())
