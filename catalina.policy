@@ -228,7 +228,10 @@ grant codeBase "file:${catalina.home}/webapps/host-manager/-" {
 };
 
 grant codeBase "file:${catalina.home}/webapps/JavaVulnerableLab/-" {
-        permission java.security.AllPermission;
+        permission java.util.PropertyPermission "file.encoding", "read";
+        permission java.net.SocketPermission "mysql:3306", "connect";
+        permission java.io.FilePermission "/usr/local/tomcat/webapps/JavaVulnerableLab/pages", "write";
+        permission java.io.FilePermission "/usr/local/tomcat/webapps/JavaVulnerableLab/pages/*", "read,write,delete";
 };
 
 // You can assign additional permissions to particular web applications by
