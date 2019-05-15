@@ -230,6 +230,7 @@ grant codeBase "file:${catalina.home}/webapps/host-manager/-" {
 grant codeBase "file:${catalina.home}/webapps/JavaVulnerableLab/-" {
         permission java.util.PropertyPermission "file.encoding", "read";
         permission java.net.SocketPermission "mysql:3306", "connect";
+        permission java.io.FilePermission "/usr/local/tomcat/webapps/JavaVulnerableLab/WEB-INF/config.properties", "write";
         permission java.io.FilePermission "/usr/local/tomcat/webapps/JavaVulnerableLab/pages", "write";
         permission java.io.FilePermission "/usr/local/tomcat/webapps/JavaVulnerableLab/pages/*", "read,write,delete";
 };
