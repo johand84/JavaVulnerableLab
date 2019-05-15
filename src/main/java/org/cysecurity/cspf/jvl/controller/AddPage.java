@@ -40,25 +40,33 @@ public class AddPage extends HttpServlet {
            String content=request.getParameter("content");
            if(fileName!=null && content!=null)
            {
-            String pagesDir=getServletContext().getRealPath("/pages");
-            new File(pagesDir).mkdirs();
-            String filePath=pagesDir+"/"+fileName;
-            File f=new File(filePath);
-            if(f.exists())
-            {
-                f.delete();
-            }
-                if(f.createNewFile())
-                {
-                    BufferedWriter bw=new BufferedWriter(new FileWriter(f.getAbsoluteFile()));
-                    bw.write(content);
-                    bw.close();
-                    out.print("Successfully created the file: <a href='../pages/"+fileName+"'>"+fileName+"</a>");
-                }
-                else
-                {
-                    out.print("Failed to create the file");
-                }
+               String pagesDir = getServletContext().getRealPath("/pages") + "/";
+               new File(pagesDir).mkdirs();
+
+               String filePath = new File(pagesDir + fileName).getCanonicalPath();
+
+               if (filePath.startsWith(pagesDir)) {
+                   File f = new File(filePath);
+                   if(f.exists())
+                   {
+                       f.delete();
+                   }
+                   if(f.createNewFile())
+                   {
+                       BufferedWriter bw=new BufferedWriter(new FileWriter(f.getAbsoluteFile()));
+                       bw.write(content);
+                       bw.close();
+                       out.print("Successfully created the file: <a href='../pages/"+fileName+"'>"+fileName+"</a>");
+                   }
+                   else
+                   {
+                       out.print("Failed to create the file");
+                   }
+               }
+               else {
+                   // TODO Better error handling
+                   out.print("premission denied");
+               }
            }
            else
            {
