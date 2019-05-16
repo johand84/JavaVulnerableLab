@@ -19,7 +19,7 @@
  %>	
 <form action="manageusers.jsp" method="POST">	
 <%
- ResultSet rs=stmt.executeQuery("select * from users where privilege='user'");
+ ResultSet rs=con.createStatement().executeQuery("select * from users where privilege='user'");
  while(rs.next())
  {
      out.print("<input type='radio' name='user' value='"+rs.getString("username")+"'/> "+rs.getString("username")+"<br/>");
