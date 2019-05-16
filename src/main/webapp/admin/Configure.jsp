@@ -1,7 +1,7 @@
  <%@page import="java.io.FileOutputStream"%>
 <%@ include file="/header.jsp" %>
  <%
- if(session.getAttribute("isLoggedIn")!=null)
+ if(session.getAttribute("privilege")!=null && session.getAttribute("privilege").equals("admin"))
 {
 
  %> 

@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -33,55 +34,62 @@ public class AddPage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-           String fileName=request.getParameter("filename");
-           String content=request.getParameter("content");
-           if(fileName!=null && content!=null)
-           {
-               String pagesDir = getServletContext().getRealPath("/pages") + "/";
-               new File(pagesDir).mkdirs();
 
-               String filePath = new File(pagesDir + fileName).getCanonicalPath();
+		HttpSession session = request.getSession();
+		PrintWriter out = response.getWriter();
+		if(session.getAttribute("privilege")!=null && session.getAttribute("privilege").equals("admin")) {
 
-               if (filePath.startsWith(pagesDir)) {
-                   File f = new File(filePath);
-                   if(f.exists())
-                   {
-                       f.delete();
-                   }
-                   if(f.createNewFile())
-                   {
-                       BufferedWriter bw=new BufferedWriter(new FileWriter(f.getAbsoluteFile()));
-                       bw.write(content);
-                       bw.close();
-                       out.print("Successfully created the file: <a href='../pages/"+fileName+"'>"+fileName+"</a>");
-                   }
-                   else
-                   {
-                       out.print("Failed to create the file");
-                   }
-               }
-               else {
-                   // TODO Better error handling
-                   out.print("premission denied");
-               }
-           }
-           else
-           {
-               out.print("filename or content Parameter is missing");
-           }           
-           
-        } 
-        catch(Exception e)
-        {
-            out.print(e);
-        }
-        finally {
-            out.close();
-        }
-    }
+
+		    response.setContentType("text/html;charset=UTF-8");
+		    try {
+		       String fileName=request.getParameter("filename");
+		       String content=request.getParameter("content");
+		       if(fileName!=null && content!=null)
+		       {
+		           String pagesDir = getServletContext().getRealPath("/pages") + "/";
+		           new File(pagesDir).mkdirs();
+
+		           String filePath = new File(pagesDir + fileName).getCanonicalPath();
+
+		           if (filePath.startsWith(pagesDir)) {
+		               File f = new File(filePath);
+		               if(f.exists())
+		               {
+		                   f.delete();
+		               }
+		               if(f.createNewFile())
+		               {
+		                   BufferedWriter bw=new BufferedWriter(new FileWriter(f.getAbsoluteFile()));
+		                   bw.write(content);
+		                   bw.close();
+		                   out.print("Successfully created the file: <a href='../pages/"+fileName+"'>"+fileName+"</a>");
+		               }
+		               else
+		               {
+		                   out.print("Failed to create the file");
+		               }
+		           }
+		           else {
+		               // TODO Better error handling
+		               out.print("premission denied");
+		           }
+		       }
+		       else
+		       {
+		           out.print("filename or content Parameter is missing");
+		       }
+		    }
+		    catch(Exception e)
+		    {
+		        out.print(e);
+		    }
+		    finally {
+		        out.close();
+		    }
+		} else {
+				out.print("premission denied");
+			   }
+	}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
