@@ -39,8 +39,8 @@
 	</tr>
 	<tr>
 		<td></td>
+		<td><input type="hidden" value="1" name="setup"/></td>
 	</tr>
-	<input type="hidden" value="1" name="setup"/>
 	<tr>
 		<td></td>
 		<td><input type="submit" value="Install" name="Install"/></td>

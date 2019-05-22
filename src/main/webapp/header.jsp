@@ -50,7 +50,7 @@
 									<li><a href="<%=path%>/vulnerability/Injection/orm.jsp?id=1">ORM Injection</a></li>
 								</ul>
 							</li>
-							<li><a href="#">A2- Broken Authentication & Session Management</a>
+							<li><a href="#">A2- Broken Authentication &amp; Session Management</a>
 								<ul>
 									<li><a href="<%=path%>/ForgotPassword.jsp">UserName Enumeration</a></li>
 									<li><a href="<%=path%>/login.jsp">Brute Foce Login Page</a></li>
@@ -73,6 +73,7 @@
 											<li><a href="<%=path%>/vulnerability/xss/flash/xss1.swf?vuln=<%=path%>">Challenge 1</a></li>
 											<li><a href="<%=path%>/vulnerability/xss/flash/exss.jsp">Challenge 2</a></li>
 										</ul>
+									</li>
 									<li><a href="<%=path%>/vulnerability/forum.jsp">Stored XSS(Persistent)</a></li>
 								</ul>
 							</li>
@@ -117,7 +118,7 @@
 									<li><a href="/VulnerableSpring/error.htm?msg=error.c403">Web Application using Spring Framework</a></li>
 								</ul>
 							</li>
-							<li><a href="#">A10. Unvalidated Redirect & Forward..</a>
+							<li><a href="#">A10. Unvalidated Redirect &amp; Forward..</a>
 								<ul>
 									<li><a href="<%=path%>/vulnerability/unvalidated/OpenURL.jsp">Open Redirect</a></li>
 									<li><a href="<%=path%>/vulnerability/unvalidated/OpenForward.jsp">Open Forward</a></li>
