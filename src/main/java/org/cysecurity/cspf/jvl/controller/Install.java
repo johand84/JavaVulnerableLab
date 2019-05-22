@@ -114,7 +114,7 @@ public class Install extends HttpServlet {
 					if (!con.isClosed()) {
 						// User Table creation
 						stmt.executeUpdate(
-								"Create table users(ID int NOT NULL AUTO_INCREMENT, username varchar(30),email varchar(60), password varchar(60), about varchar(50),privilege varchar(20),avatar TEXT,secretquestion int,secret varchar(30),primary key (id))");
+								"Create table users(ID int NOT NULL AUTO_INCREMENT, username varchar(30),email varchar(60), password varchar(64), about varchar(50),privilege varchar(20),avatar TEXT,secretquestion int,secret varchar(30),primary key (id))");
 						stmt.executeUpdate(
 								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('"
 										+ adminuser + "','" + adminpass
