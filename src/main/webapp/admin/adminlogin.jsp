@@ -11,35 +11,48 @@
 			getServletContext().getRealPath("/WEB-INF/config.properties")
 		);
 		String user=request.getParameter("username");
-		String pass=HashMe.hashMe(request.getParameter("password")); //Hashed Password
 		try
 		{
 			if(con!=null && !con.isClosed())
 			{
-				ResultSet rs=null;
-				PreparedStatement stmt = con.prepareStatement(
-					"select * from users where username=? and password=? and privilege='admin'"
+				PreparedStatement stmt1 = con.prepareStatement(
+					"select salt from users where username=?"
 				);
-				stmt.setString(1, user);
-				stmt.setString(2, pass);
-				rs=stmt.executeQuery();
+				stmt1.setString(1, user);
+				ResultSet rs1 = stmt1.executeQuery();
+				if (rs1 != null && rs1.next()) {
+					String pass = HashMe.hashMe(
+						request.getParameter("password"),
+						rs1.getString("salt")
+					); // Hashed/salted Password
 
-				if(rs != null && rs.next()){
-					session.setAttribute("isLoggedIn", "1");
-					session.setAttribute("userid", rs.getString("id"));
-					session.setAttribute("user", rs.getString("username"));
-					session.setAttribute("avatar", rs.getString("avatar"));
-					session.setAttribute("privilege", rs.getString("privilege"));
+					PreparedStatement stmt2 = con.prepareStatement(
+						"select * from users where username=? and password=? and privilege='admin'"
+					);
+					stmt2.setString(1, user);
+					stmt2.setString(2, pass);
+					ResultSet rs2 = stmt2.executeQuery();
 
-					Cookie privilege=new Cookie("privilege","admin");
-					privilege.setPath(request.getContextPath());
-					response.addCookie(privilege);
+					if(rs2 != null && rs2.next()){
+						session.setAttribute("isLoggedIn", "1");
+						session.setAttribute("userid", rs2.getString("id"));
+						session.setAttribute("user", rs2.getString("username"));
+						session.setAttribute("avatar", rs2.getString("avatar"));
+						session.setAttribute("privilege", rs2.getString("privilege"));
 
-					response.sendRedirect("admin.jsp");
+						Cookie privilege=new Cookie("privilege","admin");
+						privilege.setPath(request.getContextPath());
+						response.addCookie(privilege);
+
+						response.sendRedirect("admin.jsp");
+					}
+					else
+					{
+						response.sendRedirect("adminlogin.jsp?err=<span style='color:red'>Username/Password is wrong</span>");
+					}
 				}
-				else
-				{
-					response.sendRedirect("adminlogin.jsp?err=<span style='color:red'>Username/Password is wrong</span>");
+				else {
+					response.sendRedirect("adminlogin.jsp?err=<span style='color:red'>Something went wrong</span>");
 				}
 			}
 		}

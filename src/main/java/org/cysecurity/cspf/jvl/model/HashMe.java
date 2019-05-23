@@ -8,11 +8,11 @@ import java.security.NoSuchAlgorithmException;
  * @author breakthesec
  */
 public class HashMe {
-	public static String hashMe(String str) {
+	public static String hashMe(String str,String salt) {
 		StringBuffer sb = null;
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(str.getBytes());
+			md.update((str + salt).getBytes());
 			byte byteData[] = md.digest();
 			sb = new StringBuffer();
 			for (int i = 0; i < byteData.length; i++) {

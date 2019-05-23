@@ -19,7 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cysecurity.cspf.jvl.model.HashMe;
+
+import org.cysecurity.cspf.jvl.model.Database;
 
 /**
  *
@@ -58,7 +59,7 @@ public class Install extends HttpServlet {
 		dbname = request.getParameter("dbname");
 		siteTitle = request.getParameter("siteTitle");
 		adminuser = request.getParameter("adminuser");
-		adminpass = HashMe.hashMe(request.getParameter("adminpass"));
+		adminpass = request.getParameter("adminpass");
 
 		// Moifying Configuration Properties:
 		Properties config = new Properties();
@@ -114,11 +115,32 @@ public class Install extends HttpServlet {
 					if (!con.isClosed()) {
 						// User Table creation
 						stmt.executeUpdate(
-								"Create table users(ID int NOT NULL AUTO_INCREMENT, username varchar(30),email varchar(60), password varchar(64), about varchar(50),privilege varchar(20),avatar TEXT,secretquestion int,secret varchar(30),primary key (id))");
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('"
-										+ adminuser + "','" + adminpass
-										+ "','admin@localhost','I am the admin of this application','default.jpg','admin',1,'rocky')");
+							"CREATE TABLE users" +
+							"(" +
+								"ID int NOT NULL AUTO_INCREMENT," +
+								"username varchar(30)," +
+								"email varchar(60)," +
+								"password char(64)," +
+								"salt char(64)," +
+								"about varchar(50)," +
+								"privilege varchar(20)," +
+								"avatar TEXT," +
+								"secretquestion int," +
+								"secret varchar(30)," +
+								"PRIMARY KEY (id)" +
+							")"
+						);
+
+						Database db = new Database(con);
+						db.insertUser(
+							adminuser,
+							adminpass,
+							"admin@localhost",
+							"I am the admin of this application",
+							"default.jpg",
+							true,
+							"rocky"
+						);
 						stmt.executeUpdate(
 								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('victim','victim','victim@localhost','I am the victim of this application','default.jpg','user',1,'max')");
 						stmt.executeUpdate(
