@@ -1,3 +1,4 @@
+<%@page import="org.owasp.html.HtmlPolicyBuilder"%>
 <%@ include file="header.jsp" %>
 <%
 	String username="";
@@ -27,7 +28,17 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td class="fail"><% if(request.getParameter("err")!=null){out.print(request.getParameter("err"));} %></td>
+		<td class="fail">
+			<%
+	if (request.getParameter("err") != null){
+		out.print(
+			new HtmlPolicyBuilder().toFactory().sanitize(
+				request.getParameter("err")
+			)
+		);
+	}
+			%>
+		</td>
 	</tr>
 </table>
 </form>
