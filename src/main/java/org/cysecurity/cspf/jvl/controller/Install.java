@@ -190,16 +190,27 @@ public class Install extends HttpServlet {
 						);
 
 						// Posts table creation
-						stmt.executeUpdate(
-								"create table posts(postid int NOT NULL AUTO_INCREMENT, content TEXT,title varchar(100), user varchar(30), primary key (postid))");
-						stmt.executeUpdate(
-								"INSERT into posts(content,title, user) values ('Feel free to ask any questions about Java Vulnerable Lab','First Post', 'admin')");
-						stmt.executeUpdate(
-								"INSERT into posts(content,title, user) values ('Hello Guys, this is victim','Second Post', 'victim')");
-						stmt.executeUpdate(
-								"INSERT into posts(content,title, user) values ('Hello This is attacker','Third Post', 'attacker')");
-						stmt.executeUpdate(
-								"INSERT into posts(content,title, user) values ('Trinity! Help!','Help','neo')");
+						db.createPosts();
+						db.insertPost(
+							"Feel free to ask any questions about Java Vulnerable Lab",
+							"First Post",
+							"admin"
+						);
+						db.insertPost(
+							"Hello Guys, this is victim",
+							"Second Post",
+							"victim"
+						);
+						db.insertPost(
+							"Hello This is attacker",
+							"Third Post",
+							"attacker"
+						);
+						db.insertPost(
+							"Trinity! Help!",
+							"Help",
+							"neo"
+						);
 
 						stmt.executeUpdate("create table tdata(id int, page varchar(30))");
 						stmt.executeUpdate("Insert into tdata values(1,'ext1.html')");
