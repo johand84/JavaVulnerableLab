@@ -9,15 +9,14 @@ package org.cysecurity.cspf.jvl.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.cysecurity.cspf.jvl.model.DBConnect;
+import org.cysecurity.cspf.jvl.model.Database;
 
 /**
  *
@@ -53,15 +52,16 @@ public class Register extends HttpServlet {
 			}
 			try {
 				if (con != null && !con.isClosed()) {
-
-					PreparedStatement stmt1 = con.prepareStatement(
-						"INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values (?,?,?,?,'default.jpg','user',1,?)");
-					stmt1.setString(1, user);
-					stmt1.setString(2, pass);
-					stmt1.setString(3, email);
-					stmt1.setString(4, about);
-					stmt1.setString(5, secret);
-					stmt1.executeUpdate();
+					Database db = new Database(con);
+					db.insertUser(
+						user,
+						pass,
+						email,
+						about,
+						"default.jpg",
+						false,
+						secret
+					);
 
 					PreparedStatement stmt2 = con.prepareStatement(
 						"INSERT into UserMessages(recipient, sender, subject, msg) values (?,'admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");

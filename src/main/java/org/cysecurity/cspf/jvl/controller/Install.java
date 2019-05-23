@@ -141,16 +141,52 @@ public class Install extends HttpServlet {
 							true,
 							"rocky"
 						);
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('victim','victim','victim@localhost','I am the victim of this application','default.jpg','user',1,'max')");
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('attacker','attacker','attacker@localhost','I am the attacker of this application','default.jpg','user',1,'bella')");
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('NEO','trinity','neo@matrix','I am the NEO','default.jpg','user',1,'sentinel')");
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('trinity','NEO','trinity@matrix','it is Trinity','default.jpg','user',1,'sentinel')");
-						stmt.executeUpdate(
-								"INSERT into users(username, password, email,About,avatar, privilege,secretquestion,secret) values ('Anderson','java','anderson@1999','I am computer programmer','default.jpg','user',1,'C++')");
+
+						db.insertUser(
+							"victim",
+							"victim",
+							"victim@localhost",
+							"I am the victim of this application",
+							"default.jpg",
+							false,
+							"max"
+						);
+						db.insertUser(
+							"attacker",
+							"attacker",
+							"attacker@localhost",
+							"I am the attacker of this application",
+							"default.jpg",
+							false,
+							"bella"
+						);
+						db.insertUser(
+							"NEO",
+							"trinity",
+							"neo@matrix",
+							"I am the NEO",
+							"default.jpg",
+							false,
+							"sentinel"
+						);
+						db.insertUser(
+							"trinity",
+							"NEO",
+							"trinity@matrix",
+							"it is Trinity",
+							"default.jpg",
+							false,
+							"sentinel"
+						);
+						db.insertUser(
+							"Anderson",
+							"java",
+							"anderson@1999",
+							"I am computer programmer",
+							"default.jpg",
+							false,
+							"C++"
+						);
 
 						// Posts table creation
 						stmt.executeUpdate(

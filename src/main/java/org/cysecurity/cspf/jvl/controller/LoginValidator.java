@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.cysecurity.cspf.jvl.model.DBConnect;
+import org.cysecurity.cspf.jvl.model.HashMe;
 
 /**
  *
@@ -41,30 +42,44 @@ public class LoginValidator extends HttpServlet {
 		try {
 			Connection con = new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
 			if (con != null && !con.isClosed()) {
-				ResultSet rs = null;
-				PreparedStatement stmt = con.prepareStatement(
-					"select * from users where username=? and password=?"
-				);
-				stmt.setString(1, user);
-				stmt.setString(2, pass);
-				rs = stmt.executeQuery();
-				if (rs != null && rs.next()) {
-					HttpSession session = request.getSession();
-					session.setAttribute("isLoggedIn", "1");
-					session.setAttribute("userid", rs.getString("id"));
-					session.setAttribute("user", rs.getString("username"));
-					session.setAttribute("avatar", rs.getString("avatar"));
-					Cookie privilege = new Cookie("privilege", "user");
-					response.addCookie(privilege);
-					if (request.getParameter("RememberMe") != null) {
-						Cookie username = new Cookie("username", user);
-						Cookie password = new Cookie("password", pass);
-						response.addCookie(username);
-						response.addCookie(password);
+				PreparedStatement stmt1 = con.prepareStatement(
+						"select salt from users where username=?"
+					);
+				stmt1.setString(1, user);
+				ResultSet rs1 = stmt1.executeQuery();
+
+				if (rs1 != null && rs1.next()) {
+					String salt = rs1.getString("salt");
+					String hash = HashMe.hashMe(
+						pass,
+						salt
+					); // Hashed/salted Password
+
+					ResultSet rs = null;
+					PreparedStatement stmt = con.prepareStatement(
+						"select * from users where username=? and password=?"
+					);
+					stmt.setString(1, user);
+					stmt.setString(2,hash);
+					rs = stmt.executeQuery();
+					if (rs != null && rs.next()) {
+						HttpSession session = request.getSession();
+						session.setAttribute("isLoggedIn", "1");
+						session.setAttribute("userid", rs.getString("id"));
+						session.setAttribute("user", rs.getString("username"));
+						session.setAttribute("avatar", rs.getString("avatar"));
+						Cookie privilege = new Cookie("privilege", "user");
+						response.addCookie(privilege);
+						if (request.getParameter("RememberMe") != null) {
+							Cookie username = new Cookie("username", user);
+							Cookie password = new Cookie("password", pass);
+							response.addCookie(username);
+							response.addCookie(password);
+						}
+						response.sendRedirect(response.encodeURL("ForwardMe?location=/index.jsp"));
+					} else {
+						response.sendRedirect("ForwardMe?location=/login.jsp&err=Invalid Username or Password");
 					}
-					response.sendRedirect(response.encodeURL("ForwardMe?location=/index.jsp"));
-				} else {
-					response.sendRedirect("ForwardMe?location=/login.jsp&err=Invalid Username or Password");
 				}
 
 			}
