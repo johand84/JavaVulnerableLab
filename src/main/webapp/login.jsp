@@ -1,16 +1,11 @@
 <%@ include file="header.jsp" %>
 <%
 	String username="";
-	String password="";
 	Cookie[] cookies = request.getCookies();
 	if (cookies != null)
 		for (Cookie c : cookies) {
 			if ("username".equals(c.getName())) {
 				username= c.getValue();
-			}
-			else if("password".equals(c.getName()))
-			{
-				password = c.getValue();
 			}
 		}
  %>
@@ -22,7 +17,7 @@
 	</tr>
 	<tr>
 		<td>Password :</td>
-		<td><input type="text" name="password" value="<%=password%>"/></td>
+		<td><input type="password" name="password"/></td>
 	</tr>
 	<tr>
 		<td>Remember me: </td>

@@ -68,13 +68,9 @@ public class LoginValidator extends HttpServlet {
 						session.setAttribute("userid", rs.getString("id"));
 						session.setAttribute("user", rs.getString("username"));
 						session.setAttribute("avatar", rs.getString("avatar"));
-						Cookie privilege = new Cookie("privilege", "user");
-						response.addCookie(privilege);
 						if (request.getParameter("RememberMe") != null) {
 							Cookie username = new Cookie("username", user);
-							Cookie password = new Cookie("password", pass);
 							response.addCookie(username);
-							response.addCookie(password);
 						}
 						response.sendRedirect(response.encodeURL("ForwardMe?location=/index.jsp"));
 					} else {

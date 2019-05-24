@@ -40,10 +40,6 @@
 						session.setAttribute("avatar", rs2.getString("avatar"));
 						session.setAttribute("privilege", rs2.getString("privilege"));
 
-						Cookie privilege=new Cookie("privilege","admin");
-						privilege.setPath(request.getContextPath());
-						response.addCookie(privilege);
-
 						response.sendRedirect("admin.jsp");
 					}
 					else
