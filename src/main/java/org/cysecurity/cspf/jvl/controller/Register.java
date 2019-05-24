@@ -63,10 +63,12 @@ public class Register extends HttpServlet {
 						secret
 					);
 
-					PreparedStatement stmt2 = con.prepareStatement(
-						"INSERT into UserMessages(recipient, sender, subject, msg) values (?,'admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
-					stmt2.setString(1, user);
-					stmt2.executeUpdate();
+					db.insertUserMessage(
+						user,
+						"admin",
+						"Hi",
+						"Hi<br/> This is admin of this page. <br/> Welcome to Our Forum"
+					);
 
 					response.sendRedirect("index.jsp");
 

@@ -61,7 +61,7 @@ public class Install extends HttpServlet {
 		adminuser = request.getParameter("adminuser");
 		adminpass = request.getParameter("adminpass");
 
-		// Moifying Configuration Properties:
+		// Modifying Configuration Properties:
 		Properties config = new Properties();
 		config.load(new FileInputStream(configPath));
 		config.setProperty("dburl", dburl);
@@ -211,12 +211,20 @@ public class Install extends HttpServlet {
 								"INSERT into Messages(name,email, msg) values ('TestUser','Test@localhost', 'Hi admin, how are you')");
 
 						// User Messages Table Creation recipient, sender, email, msg
-						stmt.executeUpdate(
-								"Create table UserMessages(msgid int NOT NULL AUTO_INCREMENT,recipient varchar(30),sender varchar(30),subject varchar(60), msg varchar(500),primary key (msgid))");
-						stmt.executeUpdate(
-								"INSERT into UserMessages(recipient, sender, subject, msg) values ('attacker','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
-						stmt.executeUpdate(
-								"INSERT into UserMessages(recipient, sender, subject, msg) values ('victim','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
+						db.createUserMessages();
+						db.createSelectUserMessage();
+						db.insertUserMessage(
+							"attacker",
+							"admin",
+							"Hi",
+							"Hi<br/> This is admin of this page. <br/> Welcome to Our Forum"
+						);
+						db.insertUserMessage(
+							"victim",
+							"admin",
+							"Hi",
+							"Hi<br/> This is admin of this page. <br/> Welcome to Our Forum"
+						);
 
 						// Credit Card Table Creation
 						stmt.executeUpdate(
