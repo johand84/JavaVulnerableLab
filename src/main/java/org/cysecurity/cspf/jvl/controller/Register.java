@@ -74,6 +74,7 @@ public class Register extends HttpServlet {
 					response.sendRedirect("Register.jsp");
 				}
 			} catch (SQLException ex) {
+				out.println("Something went wrong");
 				System.out.println("SQLException: " + ex.getMessage());
 				System.out.println("SQLState: " + ex.getSQLState());
 				System.out.println("VendorError: " + ex.getErrorCode());

@@ -118,10 +118,10 @@ public class Install extends HttpServlet {
 							"CREATE TABLE users" +
 							"(" +
 								"ID int NOT NULL AUTO_INCREMENT," +
-								"username varchar(30)," +
+								"username varchar(30) NOT NULL UNIQUE," +
 								"email varchar(60)," +
-								"password char(64)," +
-								"salt char(64)," +
+								"password char(64) NOT NULL," +
+								"salt char(64) NOT NULL," +
 								"about varchar(50)," +
 								"privilege varchar(20)," +
 								"avatar TEXT," +
