@@ -30,10 +30,21 @@
 				ResultSet rs1=stmt.executeQuery("select * from cards where id="+id);
 				if(rs1 != null && rs1.next())
 				{
+					String cardnumber = rs1.getString("cardno");
+					String cvv = rs1.getString("cvv");
+					boolean cardnumberValid = true;
+					boolean cvvValid = true;
+
+					for (char c : cardnumber.toCharArray())
+						cardnumberValid &= Character.isDigit(c);
+
+					for (char c : cvv.toCharArray())
+						cvvValid &= Character.isDigit(c);
+
 					out.print("<br/>-------------------<br/>Card Details:<br/>-------------------<br/>");
-					out.print("Card Number: "+rs1.getString("cardno")+"<br/>");
-					out.print("CVV: "+rs1.getString("cvv")+"<br/>");
-					out.print("Expiry Date: "+rs1.getString("expirydate")+"<br/>");
+					out.print("Card Number: " + (cardnumberValid ? cardnumber : "") + "<br/>");
+					out.print("CVV: " + (cvvValid ? cvv : "") + "<br/>");
+					out.print("Expiry Date: "+rs1.getDate("expirydate")+"<br/>");
 				}
 				else
 				{

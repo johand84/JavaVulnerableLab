@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
 import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -227,14 +228,22 @@ public class Install extends HttpServlet {
 						);
 
 						// Credit Card Table Creation
-						stmt.executeUpdate(
-								"Create table cards(id int,cardno varchar(80), cvv varchar(6),expirydate varchar(15))");
-						stmt.executeUpdate(
-								"INSERT into cards(id,cardno, cvv,expirydate) values ('1','4000123456789010','123','12/2014')");
-						stmt.executeUpdate(
-								"INSERT into cards(id,cardno, cvv,expirydate) values ('2','4111111111111111 ','321','7/2015')");
-						stmt.executeUpdate(
-								"INSERT into cards(id,cardno, cvv,expirydate) values ('3','5111111111111118','111','1/2017')");
+						db.createCards();
+						db.insertCard(
+								1,
+								"4000123456789010",
+								"123",
+								Date.valueOf("2014-12-01"));
+						db.insertCard(
+								2,
+								"4111111111111111",
+								"321",
+								Date.valueOf("2015-07-01"));
+						db.insertCard(
+								3,
+								"5111111111111118",
+								"111",
+								Date.valueOf("2017-05-01"));
 
 						// Files List Table Creation
 						stmt.executeUpdate(
