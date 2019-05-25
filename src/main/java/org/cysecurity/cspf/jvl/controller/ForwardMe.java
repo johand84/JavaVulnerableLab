@@ -6,6 +6,7 @@
 
 package org.cysecurity.cspf.jvl.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -36,9 +37,15 @@ public class ForwardMe extends HttpServlet {
 		try {
 			if (request.getParameter("location") != null) {
 				String location = request.getParameter("location");
+				String sanitized = new File(location).getCanonicalPath();
 				// Forwarding
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
-				dispatcher.forward(request, response);
+				if (!sanitized.startsWith("/WEB-INF/")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(location);
+					dispatcher.forward(request, response);
+				}
+				else {
+					out.print("Permission denied");
+				}
 			} else {
 				out.print("Location Parameter is missing");
 			}
