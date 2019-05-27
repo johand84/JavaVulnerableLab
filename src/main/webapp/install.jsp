@@ -1,4 +1,13 @@
 <%@ include file="/header.jsp" %>
+<%
+	Properties cfg = new Properties();
+	cfg.load(new FileInputStream(configPath));
+
+	/*
+	 * Disable install after first use
+	 */
+	if (cfg.getProperty("installed") == null) {
+%>
 
 <form action="Install" method="POST">
 <table>
@@ -49,5 +58,12 @@
 </form>
 <br/>
 Note:<b style="color:red">If a database already exits, it will be dropped </b>
+
+<%
+	}
+	else {
+		out.print("<b class='fail'> Already installed </b>");
+	}
+%>
 
 <%@ include file="/footer.jsp" %>

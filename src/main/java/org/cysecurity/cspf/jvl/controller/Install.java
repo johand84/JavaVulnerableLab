@@ -65,12 +65,20 @@ public class Install extends HttpServlet {
 		// Modifying Configuration Properties:
 		Properties config = new Properties();
 		config.load(new FileInputStream(configPath));
+
+		/*
+		 * Disable install function after first use
+		 */
+		if (config.getProperty("installed") != null)
+			return;
+
 		config.setProperty("dburl", dburl);
 		config.setProperty("jdbcdriver", jdbcdriver);
 		config.setProperty("dbuser", dbuser);
 		config.setProperty("dbpass", dbpass);
 		config.setProperty("dbname", dbname);
 		config.setProperty("siteTitle", siteTitle);
+		config.setProperty("installed", "1");
 		FileOutputStream fileout = new FileOutputStream(configPath);
 		config.store(fileout, null);
 		fileout.close();
