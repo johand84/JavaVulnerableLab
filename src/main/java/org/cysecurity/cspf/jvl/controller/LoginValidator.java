@@ -65,7 +65,7 @@ public class LoginValidator extends HttpServlet {
 					if (rs != null && rs.next()) {
 						HttpSession session = request.getSession();
 						session.setAttribute("isLoggedIn", "1");
-						session.setAttribute("userid", rs.getString("id"));
+						session.setAttribute("userid", rs.getInt("id"));
 						session.setAttribute("user", rs.getString("username"));
 						session.setAttribute("avatar", rs.getString("avatar"));
 						session.setAttribute("privilege", rs.getString("privilege"));

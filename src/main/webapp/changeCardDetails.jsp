@@ -38,7 +38,7 @@ Change Credit Card Info:<br/><br/>
 <%
 		Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
 
-		int id=Integer.parseInt(session.getAttribute("userid").toString());		//Gets User ID
+		Integer id = (Integer)session.getAttribute("userid");		//Gets User ID
 		String action=request.getParameter("action");
 		try
 		{
